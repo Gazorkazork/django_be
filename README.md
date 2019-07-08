@@ -1,8 +1,8 @@
 # CS Build Week 1
 
-For your first CS Build Week, you will be building an interactive MUD client and server in groups. To succeed with this project, you will be applying knowledge you've learned throughout the first part of CS to this project in your main track.
+For your first CS Build Week, you will be building an interactive MUD client and server in groups. To succeed with this project, you will be applying knowledge you've learned throughout the first part of CS to this project.
 
-You should treat this project like a real-world job assignment with your instructor as the client. Like in the real world, you may not be given all the information you need to complete the assignment up front. It is your responsibility to understand the requirements and ask questions if anything is unclear (Polya) before jumping into the code.
+You should treat this like a real-world job assignment with your instructor as the client. Like in the real world, you may not be given all the information you need to complete the assignment up front. It is your responsibility to understand the requirements and ask questions if anything is unclear (Polya) before jumping into the code.
 
 ## Roles
 
@@ -48,11 +48,9 @@ You can consider Pusher websocket integration to be a stretch goal. Your server 
 
 #### 3. Create an interesting world on the server
 
-To create your world, you will need to add rooms to your server. You will need to create more rooms and descriptions to build a unique, traversable world on your server that your client apps can interact with via REST API calls.
+To create your world, you will need to [add rooms](https://github.com/LambdaSchool/LambdaMUD-Project/blob/master/util/create_world.py) to your server. You will need to create more rooms and descriptions to build a unique, traversable world that your client apps can interact with via REST API calls.
 
-You will also need to implement a `GET rooms` API endpoint for clients to fetch all rooms to display a map on the frontend.
-
-
+You will also need to implement a GET `rooms` API endpoint for clients to fetch all rooms to display a map on the frontend.
 
 ### Frontend
 
@@ -67,6 +65,38 @@ Once your backend is up and running, you should be able to swap out the test hos
 #### 3. Display a visual map of the world
 
 Your backend should implement a `rooms` endpoint which will return data for every room in your world. Your job will be to build a map to display a map of those rooms, along with relevant information, like marking which room the player is currently in.
+
+
+## FAQs and Troubleshooting
+
+### 1. Can you show me an example of a map visualization?
+
+Here's a sample project created by former CS SL [Ryan Walker](http://ryanwalker.dev):
+
+![Lambda Treasure Hunt](img/Lambda_Treasure_Hunt_Screenshot.jpg)
+
+### 2. How do I build something like that?
+
+Think about the algorithm to draw your map. It will probably be something like this:
+
+```
+def draw_map():
+    # Get all rooms
+    # For each room in rooms...
+        # Draw the room
+        # Draw each exit
+```
+
+What data do you need to implement this? A list of rooms, their exits, maybe their positions? The server should return all the information you need from the `rooms` endpoint. Note that backend developers may need to define some fields in the `Room` model that do not exist yet.
+
+### 3. How do I "create an interesting world"?
+
+I'll leave that to you to determine.
+
+
+### 4. What is Pusher?
+
+Pusher is a cross-platform websocket library. This will allow you to turn your app into a real MUD with live push notifications to your client. You can consider integration to be a stretch goal but it's worth the effort if you have the time: websockets are powerful!
 
 
 
