@@ -32,8 +32,11 @@ In Week 1, you learned a new language (Python) and built an interactive world wi
 
 You may find these resources useful:
 
-https://github.com/LambdaSchool/Intro-Django
-
+* https://github.com/LambdaSchool/Intro-Django
+* [https://www.youtube.com/watch?v=5rfCWD0jB9U](CS12: Intro to Django: Setup, Models, and Migrations)
+* [https://www.youtube.com/watch?v=0qsOwWTo2wc](CS12: Intro to Django: GraphQL and Graphene)
+* [https://www.youtube.com/watch?v=yMGUq3i1qBY](CS12: Intro to Django: REST and Users)
+* [https://www.youtube.com/watch?v=_8nTE2NE5tg](CS12: Intro to Django: Token Auth, GraphQL Mutations)
 
 #### 2. Deploy a LambdaMUD server
 
