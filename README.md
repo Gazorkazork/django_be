@@ -17,7 +17,7 @@ Each team must have a minimum of one Backend and one Frontend developer. The res
 
 ### Frontend
 
-1. Deploy a [LambdaMUD client](https://github.com/LambdaSchool/LambdaMUD-Project) that connects to the test server
+1. Deploy a [LambdaMUD client](https://github.com/LambdaSchool/LambdaMUD-Project) that connects to the test server at `https://lambda-mud-test.herokuapp.com/`
 2. Connect your LambdaMUD client to the production server
 3. Display a visual map of the world
 
