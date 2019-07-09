@@ -73,7 +73,7 @@ Your backend should implement a `rooms` endpoint which will return data for ever
 
 Here's a sample project created by former CS SL [Ryan Walker](http://ryanwalker.dev):
 
-![Lambda Treasure Hunt](img/Lambda_Treasure_Hunt_Screenshot.jpg)
+![Lambda Treasure Hunt](img/treasure-hunt-1.png)
 
 ### 2. How do I build something like that?
 
@@ -99,7 +99,13 @@ I'll leave that to you to determine.
 Pusher is a cross-platform websocket library. This will allow you to turn your app into a real MUD with live push notifications to your client. You can consider integration to be a stretch goal but it's worth the effort if you have the time: websockets are powerful!
 
 
+### 5. What will the `rooms` API endpoint look like?
 
+It's up to you what data the request will return but the API request should be something like this:
+
+```
+curl -X GET -H 'Authorization: Token cc504e88ef659843b858d61c101ca9d4f0edf979' http://lambda-mud-test.herokuapp.com/api/adv/rooms/
+```
 
 
 
