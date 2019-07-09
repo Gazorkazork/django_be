@@ -71,7 +71,7 @@ Your backend should implement a `rooms` endpoint which will return data for ever
 
 ### 1. Can you show me an example of a map visualization?
 
-Here's a sample project created by former CS SL [Ryan Walker](http://ryanwalker.dev):
+Here's a sample project created by CS16 SL [Ryan Walker](http://ryanwalker.dev):
 
 ![Lambda Treasure Hunt](img/treasure-hunt-1.png)
 
