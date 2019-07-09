@@ -1,8 +1,13 @@
 # CS Build Week 1
 
-For your first CS Build Week, you will be building an interactive MUD client and server in groups. To succeed with this project, you will be applying knowledge you've learned throughout the first part of CS to this project.
+For your first CS Build Week, you will be building an interactive ***Multi-User Dungeon (MUD)*** client and server in groups. To succeed with this project, you will be applying knowledge you've learned throughout the first part of CS to this project.
 
 You should treat this like a real-world job assignment with your instructor as the client. Like in the real world, you may not be given all the information you need to complete the assignment up front. It is your responsibility to understand the requirements and ask questions if anything is unclear (Polya) before jumping into the code.
+
+### What is a MUD?
+>A MUD...is a multiplayer real-time virtual world, usually text-based. MUDs combine elements of role-playing games, hack and slash, player versus player, interactive fiction, and online chat. Players can read or view descriptions of rooms, objects, other players, non-player characters, and actions performed in the virtual world. Players typically interact with each other and the world by typing commands that resemble a natural language. - Wikipedia
+
+With the adventure game built in previous weeks, you have already created an application containing some of these elements (rooms, descriptions, objects, players, etc.). In this project, we will be expanding these worlds to be more interactive, provide new actions for players, display world info on a professional client site, and run the world's server on a hosted site to allow multi-player functionality.
 
 ## Roles
 
@@ -10,25 +15,9 @@ Each team must have a minimum of one Backend and one Frontend developer. The res
 
 ### Backend
 
-1. [Learn Django](https://github.com/LambdaSchool/Intro-Django)
-2. Deploy a [LambdaMUD server](https://github.com/LambdaSchool/LambdaMUD-Project)
-3. Create an interesting world on the server
-
-
-### Frontend
-
-1. Deploy a [LambdaMUD client](https://github.com/LambdaSchool/LambdaMUD-Project) that connects to the test server at `https://lambda-mud-test.herokuapp.com/`
-2. Connect your LambdaMUD client to the production server
-3. Display a visual map of the world
-
-
-## Details
-
-### Backend
-
 #### 1. Learn Django
 
-In Week 1, you learned a new language (Python) and built an interactive world with it. This week, you will be learning a new web framework (Django) and building a more interesting world.
+In Sprint 1, you learned a new language (Python) and built an interactive world with it. During this project, you will be learning a new web framework (Django) and building a more interesting world.
 
 You may find these resources useful:
 
@@ -37,8 +26,9 @@ You may find these resources useful:
 * [CS12: Intro to Django: GraphQL and Graphene](https://www.youtube.com/watch?v=0qsOwWTo2wc)
 * [CS12: Intro to Django: REST and Users](https://www.youtube.com/watch?v=yMGUq3i1qBY)
 * [CS12: Intro to Django: Token Auth, GraphQL Mutations](https://www.youtube.com/watch?v=_8nTE2NE5tg)
+* [The official documentation](https://docs.djangoproject.com/en/2.2/intro/) 
 
-#### 2. Deploy a LambdaMUD server
+#### 2. Deploy a LambdaMUD server using Django
 
 Check out this repo for guidelines:
 
@@ -106,9 +96,4 @@ It's up to you what data the request will return but the API request should be s
 ```
 curl -X GET -H 'Authorization: Token cc504e88ef659843b858d61c101ca9d4f0edf979' http://lambda-mud-test.herokuapp.com/api/adv/rooms/
 ```
-
-
-
-
-
 
