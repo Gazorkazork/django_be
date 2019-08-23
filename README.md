@@ -9,11 +9,14 @@ You should treat this like a real-world job assignment with your instructor as t
 
 With the adventure game built in previous weeks, you have already created an application containing some of these elements (rooms, descriptions, objects, players, etc.). In this project, we will be expanding these worlds to be more interactive, provide new actions for players, display world info on a professional client site, and run the world's server on a hosted site to allow multi-player functionality.
 
-## Roles
+## Deliverables
 
-Each team must have a minimum of one Backend and one Frontend developer. The responsibilities will be as follows:
+Each team is responsible for building and deploying a functional MUD server, migrating a unique world onto that server, and creating a visualization and navigation client interface. We provide starter Django code with much of the server functionality implemented.
 
-### Backend
+
+
+
+### Server
 
 #### 1. Learn Django
 
@@ -26,7 +29,7 @@ You may find these resources useful:
 * [CS12: Intro to Django: GraphQL and Graphene](https://www.youtube.com/watch?v=0qsOwWTo2wc)
 * [CS12: Intro to Django: REST and Users](https://www.youtube.com/watch?v=yMGUq3i1qBY)
 * [CS12: Intro to Django: Token Auth, GraphQL Mutations](https://www.youtube.com/watch?v=_8nTE2NE5tg)
-* [The official documentation](https://docs.djangoproject.com/en/2.2/intro/) 
+* [The official documentation](https://docs.djangoproject.com/en/2.2/intro/)
 
 #### 2. Deploy a LambdaMUD server using Django
 
@@ -46,7 +49,7 @@ You will also need to implement a GET `rooms` API endpoint for clients to fetch 
 
 More on Pusher below.
 
-### Frontend
+### Client
 
 #### 1. Deploy a LambdaMUD client that connects to the test server
 
@@ -60,14 +63,14 @@ Once your backend is up and running, you should be able to swap out the test hos
 
 Your backend should implement a `rooms` endpoint which will return data for every room in your world. Your job will be to build a map to display a map of those rooms, along with relevant information, like marking which room the player is currently in.
 
-#### 4. STRETCH: Implement client "hearing" (Brady walks in from the north) and chat using the Pusher websocket library
+#### 4. STRETCH: Implement client "hearing" (Brady walks in from the north) and chat using the Pusher websocket library.
 
 More on Pusher below.
 
 
 ## API Requirements
 
-These are implemented on the 
+These are implemented on the test server: `https://lambda-mud-test.herokuapp.com/`.
 
 ### Registration
 * `curl -X POST -H "Content-Type: application/json" -d '{"username":"testuser", "password1":"testpassword", "password2":"testpassword"}' localhost:8000/api/registration/`
