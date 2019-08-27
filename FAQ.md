@@ -6,6 +6,7 @@
 
 * [I'm getting a huge error/something about `ssl` when installing `psycopg2` with `pipenv install`](#q100)
 * [`pipenv` command not found](#q300)
+* [`pg_config` command not found](#q400)
 
 ### Backend
 
@@ -20,6 +21,8 @@
 <a name="q100"></a>
 ### I'm getting a huge error/something about `ssl` when installing `psycopg2` with `pipenv install`
 
+_**Mac only!** These instructions won't work for Windows!_
+
 Buried at the bottom of this error message is something that looks like this:
 
 ```
@@ -30,10 +33,6 @@ build/lib.macosx-10.14-x86_64-3.7/psycopg2/_psycopg.cpython-37m-darwin.so',
 '    clang: error: linker command failed with exit code 1 (use -v to see invocation)',
 "    error: command 'clang' failed with exit status 1", '    ----------------------------------------'
 ```
-
-#### Mac
-
-_These instructions won't work for Windows!_
 
 If you don't have brew installed, [install it](https://brew.sh/).
 
@@ -60,3 +59,14 @@ The password needs to be at least 8 characters and include a number.
 Install `pipenv` if not already installed.
 
 On Windows, try a different shell, e.g. `cmd.exe` or PowerShell.
+
+<a name="q400"></a>
+### `pg_config` command not found
+
+If you get this when running `pipenv install`, first do this:
+
+```sh
+export PATH="/Applications/Postgres.app/Contents/Versions/10/bin:$PATH"
+```
+
+then run `pipenv install` again. This should fix it going forward.
