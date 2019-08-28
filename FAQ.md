@@ -18,7 +18,7 @@
 
 -->
 
-## Questions
+## Answers
 
 <a name="q100"></a>
 ### I'm getting a huge error/something about `ssl` when installing `psycopg2` with `pipenv install`
@@ -50,10 +50,14 @@ sudo ln -s /usr/local/lib/libcrypto.1.0.0.dylib /usr/local/lib/libcrypto.dylib
 
 then try `pipenv install` again.
 
+------------------------------------------------------------------------------
+
 <a name="q200"></a>
 ### I'm getting a 404 when I try to register
 
 The password needs to be at least 8 characters and include a number.
+
+------------------------------------------------------------------------------
 
 <a name="q300"></a>
 ### `pipenv` command not found
@@ -61,6 +65,8 @@ The password needs to be at least 8 characters and include a number.
 Install `pipenv` if not already installed.
 
 On Windows, try a different shell, e.g. `cmd.exe` or PowerShell.
+
+------------------------------------------------------------------------------
 
 <a name="q400"></a>
 ### `pg_config` command not found
@@ -72,6 +78,8 @@ export PATH="/Applications/Postgres.app/Contents/Versions/10/bin:$PATH"
 ```
 
 then run `pipenv install` again. This should fix it going forward.
+
+------------------------------------------------------------------------------
 
 <a name="q500"></a>
 ### Do I need to add models to `api/models.py`?
@@ -86,6 +94,8 @@ but that's just boilerplate that Django made when the project was created. You
 can ignore it.
 
 All the models that matter are in `adventure/models.py`.
+
+------------------------------------------------------------------------------
 
 <a name="q600"></a>
 ### Error: `AnonymousUser` object has no attribute `player`
