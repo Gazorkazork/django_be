@@ -11,7 +11,8 @@
 ### Backend
 
 * [I'm getting a 404 when I try to register](#q200)
-* [Do I need to add models to `api/models.py`?](q500)
+* [Do I need to add models to `api/models.py`?](#q500)
+* [Error: `AnonymousUser` object has no attribute `player`](#q600)
 
 <!--
 
@@ -85,3 +86,13 @@ but that's just boilerplate that Django made when the project was created. You
 can ignore it.
 
 All the models that matter are in `adventure/models.py`.
+
+<a name="q600"></a>
+### Error: `AnonymousUser` object has no attribute `player`
+
+This means the server has failed to authenticate your request. Make sure the
+token is in the request header in the form:
+
+```http
+Authorization: Token 0123456789ABCDEF01234567890
+```
