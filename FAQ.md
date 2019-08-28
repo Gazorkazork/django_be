@@ -13,6 +13,7 @@
 * [I'm getting a 404 when I try to register](#q200)
 * [Do I need to add models to `api/models.py`?](#q500)
 * [Error: `AnonymousUser` object has no attribute `player`](#q600)
+* [Heroku: `Pipfile.lock` is out of date](#q700)
 
 <!--
 
@@ -106,3 +107,19 @@ token is in the request header in the form:
 ```http
 Authorization: Token 0123456789ABCDEF01234567890
 ```
+
+------------------------------------------------------------------------------
+
+### Heroku: `Pipfile.lock` is out of date
+
+First run
+
+```sh
+pipenv lock
+```
+
+to regenerate the lockfile.
+
+Then make sure `Pipfile.lock` is commited to git.
+
+Then push to heroku.
