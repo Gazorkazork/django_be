@@ -33,15 +33,20 @@ You may find these resources useful:
 
 #### 2. Deploy a LambdaMUD server using Django
 
-Check out this repo for guidelines:
-
-https://github.com/LambdaSchool/LambdaMUD-Project
+* Use the [sprint challenge instructions for Intro to Django](https://github.com/LambdaSchool/Sprint-Challenge--Django-I).
+* Add environment variables to heroku using `heroku config:set KEY=VALUE`
+  * It is recommended that if you are having trouble (e.g. 500 server errors) to set
+    ```
+    DEBUG=TRUE
+    ```
+    to get more information.
+* Run the code in create_world.py on your heroku server (`heroku run python manage.py shell`)
 
 You can consider Pusher websocket integration to be a stretch goal. Your server should interact with your team's client.
 
 #### 3. Create an interesting world on the server
 
-To create your world, you will need to [add rooms](https://github.com/LambdaSchool/LambdaMUD-Project/blob/master/util/create_world.py) to your server. You will need to create more rooms and descriptions to build a unique, traversable world that your client apps can interact with via REST API calls.
+To create your world, you will need to [add rooms](https://github.com/LambdaSchool/CS-Build-Week-1/blob/master/util/create_world.py) to your server. You will need to create more rooms and descriptions to build a unique, traversable world that your client apps can interact with via REST API calls.
 
 You will also need to implement a GET `rooms` API endpoint for clients to fetch all rooms to display a map on the frontend.
 
@@ -53,7 +58,7 @@ More on Pusher below.
 
 #### 1. Deploy a LambdaMUD client that connects to the test server
 
-While your backend developers are implementing your production server, you may test your endpoints on the test server hosted at `https://lambda-mud-test.herokuapp.com/`. You can use this to test your interface for account registration, login, and movement throughout the world. (See [documentation](https://github.com/LambdaSchool/LambdaMUD-Project) for details.) Your app should store the user's auth token upon successful registration/authentication and use it to authenticate subsequent API requests.
+While your backend developers are implementing your production server, you may test your endpoints on the test server hosted at `https://lambda-mud-test.herokuapp.com/`. You can use this to test your interface for account registration, login, movement and map display. (See sample API commands below.) Your app should store the user's auth token upon successful registration/authentication and use it to authenticate subsequent API requests.
 
 #### 2. Connect your LambdaMUD client to the production server
 
