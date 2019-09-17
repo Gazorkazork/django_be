@@ -160,7 +160,7 @@ Note that all the Pusher parts are stretch.
 
 ### 1. Can you show me an example of a map visualization?
 
-Here's a sample project created by [a team in CSPT2](https://confident-wright-ca0176.netlify.com/about): 
+Here's a sample project created by [a team in CSPT2](https://confident-wright-ca0176.netlify.com): 
 
 ![Lambda Treasure Hunt](img/pt2_lambdamud.png)
 
