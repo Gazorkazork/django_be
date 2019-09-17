@@ -160,9 +160,9 @@ Note that all the Pusher parts are stretch.
 
 ### 1. Can you show me an example of a map visualization?
 
-Here's a sample project created by CS16 SL [Ryan Walker](http://ryanwalker.dev):
+Here's a sample project created by [a team in CSPT2](https://confident-wright-ca0176.netlify.com/about): 
 
-![Lambda Treasure Hunt](img/treasure-hunt-1.png)
+![Lambda Treasure Hunt](img/pt2_lambdamud.png)
 
 ### 2. How do I build something like that?
 
