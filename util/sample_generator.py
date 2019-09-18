@@ -39,12 +39,16 @@ class Room:
 class World:
     def __init__(self):
         self.grid = None
+        self.width = 0
+        self.height = 0
     def generate_rooms(self, size_x, size_y, num_rooms):
         '''
         Fill up the grid, bottom to top, in a zig-zag pattern
         '''
         # Initialize the grid
         self.grid = [None] * size_y
+        self.width = size_x
+        self.height = size_y
         for i in range( len(self.grid) ):
             self.grid[i] = [None] * size_x
         # Start from lower-left corner (0,0)
@@ -82,10 +86,12 @@ class World:
         '''
         Print the rooms in room_grid in ascii characters.
         '''
-        print("#####")
-        str = ""
-        reverse_grid = []
+
+        # Add top border
+        str = "# " * ((2 + self.width * 5) // 2 + 1) + "\n"
+
         # Reverse the array to draw from top to bottom
+        reverse_grid = []
         for i in range(len(self.grid) - 1, -1, - 1):
             reverse_grid.append(self.grid[i])
         for row in reverse_grid:
@@ -121,15 +127,19 @@ class World:
                 else:
                     str += "     "
             str += "#\n"
+
+        # Add bottom border
+        str += "# " * ((2 + self.width * 5) // 2 + 1) + "\n"
+
+        # Print string
         print(str)
-        print("#####")
 
 
 w = World()
 num_rooms = 44
 width = 8
-height = 10
-w.generate_rooms(8, 7, 44)
+height = 7
+w.generate_rooms(width, height, num_rooms)
 w.print_rooms()
 
 
