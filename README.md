@@ -162,7 +162,11 @@ Note that all the Pusher parts are stretch.
 
 Here's a sample project created by [a team in CSPT2](https://confident-wright-ca0176.netlify.com): 
 
-![Lambda Treasure Hunt](img/pt2_lambdamud.png)
+![Lambda MUD 1](img/pt2_lambdamud.png)
+
+And here's [a FT team](https://lambdaschool.com/lab-demos/lambda-mud) that went above and beyond with their use of graphics:
+
+![Lambda MUD 2](img/ex_lambdamud.png)
 
 ### 2. How do I build something like that?
 
