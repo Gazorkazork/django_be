@@ -45,22 +45,28 @@ class World:
         '''
         Fill up the grid, bottom to top, in a zig-zag pattern
         '''
+
         # Initialize the grid
         self.grid = [None] * size_y
         self.width = size_x
         self.height = size_y
         for i in range( len(self.grid) ):
             self.grid[i] = [None] * size_x
+
         # Start from lower-left corner (0,0)
         x = -1 # (this will become 0 on the first step)
         y = 0
         room_count = 0
+
         # Start generating rooms to the east
         direction = 1  # 1: east, -1: west
+
+
         # While there are rooms to be created...
         previous_room = None
         while room_count < num_rooms:
-            # Calculate the direction of the new room
+
+            # Calculate the direction of the room to be created
             if direction > 0 and x < size_x - 1:
                 room_direction = "e"
                 x += 1
@@ -68,20 +74,28 @@ class World:
                 room_direction = "w"
                 x -= 1
             else:
-                # If we hit a wall, create north and reverse direction
+                # If we hit a wall, turn north and reverse direction
                 room_direction = "n"
                 y += 1
                 direction *= -1
+
             # Create a room in the given direction
             room = Room(room_count, "A Generic Room", "This is a generic room.", x, y)
             # Note that in Django, you'll need to save the room after you create it
+
+            # Save the room in the World grid
             self.grid[y][x] = room
+
             # Connect the new room to the previous room
             if previous_room is not None:
                 previous_room.connect_rooms(room, room_direction)
+
             # Update iteration variables
             previous_room = room
             room_count += 1
+
+
+
     def print_rooms(self):
         '''
         Print the rooms in room_grid in ascii characters.
@@ -90,10 +104,12 @@ class World:
         # Add top border
         str = "# " * ((3 + self.width * 5) // 2) + "\n"
 
-        # Reverse the array to draw from top to bottom
-        reverse_grid = []
-        for i in range(len(self.grid) - 1, -1, - 1):
-            reverse_grid.append(self.grid[i])
+        # The console prints top to bottom but our array is arranged
+        # bottom to top.
+        #
+        # We reverse it so it draws in the right direction.
+        reverse_grid = list(self.grid) # make a copy of the list
+        reverse_grid.reverse()
         for row in reverse_grid:
             # PRINT NORTH CONNECTION ROW
             str += "#"
