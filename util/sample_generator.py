@@ -88,7 +88,7 @@ class World:
         '''
 
         # Add top border
-        str = "# " * ((2 + self.width * 5) // 2 + 1) + "\n"
+        str = "# " * ((3 + self.width * 5) // 2) + "\n"
 
         # Reverse the array to draw from top to bottom
         reverse_grid = []
@@ -129,7 +129,7 @@ class World:
             str += "#\n"
 
         # Add bottom border
-        str += "# " * ((2 + self.width * 5) // 2 + 1) + "\n"
+        str += "# " * ((3 + self.width * 5) // 2) + "\n"
 
         # Print string
         print(str)
