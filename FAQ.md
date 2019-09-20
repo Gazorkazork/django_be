@@ -7,6 +7,7 @@
 * [I'm getting a huge error/something about `ssl` when installing `psycopg2` with `pipenv install`](#q100)
 * [`pipenv` command not found](#q300)
 * [`pg_config` command not found](#q400)
+* [I use OneDrive. And I'm getting `PermissionError: [Errno 13] Permission denied` when running the command `pipenv install django`](#q800)
 
 ### Backend
 
@@ -110,6 +111,7 @@ Authorization: Token 0123456789ABCDEF01234567890
 
 ------------------------------------------------------------------------------
 
+<a name="q700"></a>
 ### Heroku: `Pipfile.lock` is out of date
 
 First run
@@ -123,3 +125,13 @@ to regenerate the lockfile.
 Then make sure `Pipfile.lock` is commited to git.
 
 Then push to heroku.
+
+------------------------------------------------------------------------------
+
+<a name="q800"></a>
+### * OneDrive user getting `PermissionError: [Errno 13] Permission denied` when running `pipenv install django`](#q800)
+
+Creating your Django project within OneDrive causes problems.
+
+Repeat setup & install steps in a new directory, _outside_ of OneDrive.
+
