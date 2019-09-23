@@ -8,10 +8,13 @@ import uuid
 class Room(models.Model):
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
     description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
-    n_to = models.IntegerField(default=0)
-    s_to = models.IntegerField(default=0)
-    e_to = models.IntegerField(default=0)
-    w_to = models.IntegerField(default=0)
+    floor = models.IntegerField(default=0)
+    coord_x = models.IntegerField(default=0)
+    coord_y = models.IntegerField(default=0)
+    north = models.IntegerField(default=0)
+    south = models.IntegerField(default=0)
+    east = models.IntegerField(default=0)
+    west = models.IntegerField(default=0)
     def connectRooms(self, destinationRoom, direction):
         destinationRoomID = destinationRoom.id
         try:
@@ -19,14 +22,14 @@ class Room(models.Model):
         except Room.DoesNotExist:
             print("That room does not exist")
         else:
-            if direction == "n":
-                self.n_to = destinationRoomID
-            elif direction == "s":
-                self.s_to = destinationRoomID
-            elif direction == "e":
-                self.e_to = destinationRoomID
-            elif direction == "w":
-                self.w_to = destinationRoomID
+            if direction == "north":
+                self.north = destinationRoomID
+            elif direction == "south":
+                self.south = destinationRoomID
+            elif direction == "east":
+                self.east = destinationRoomID
+            elif direction == "west":
+                self.west = destinationRoomID
             else:
                 print("Invalid direction")
                 return
@@ -61,8 +64,3 @@ def create_user_player(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_player(sender, instance, **kwargs):
     instance.player.save()
-
-
-
-
-

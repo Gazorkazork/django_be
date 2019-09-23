@@ -36,13 +36,13 @@ def move(request):
     room = player.room()
     nextRoomID = None
     if direction == "n":
-        nextRoomID = room.n_to
+        nextRoomID = room.north
     elif direction == "s":
-        nextRoomID = room.s_to
+        nextRoomID = room.south
     elif direction == "e":
-        nextRoomID = room.e_to
+        nextRoomID = room.east
     elif direction == "w":
-        nextRoomID = room.w_to
+        nextRoomID = room.west
     if nextRoomID is not None and nextRoomID > 0:
         nextRoom = Room.objects.get(id=nextRoomID)
         player.currentRoom=nextRoomID

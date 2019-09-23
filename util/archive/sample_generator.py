@@ -11,15 +11,15 @@ class Room:
         self.id = id
         self.name = name
         self.description = description
-        self.n_to = None
-        self.s_to = None
-        self.e_to = None
-        self.w_to = None
+        self.north = None
+        self.south = None
+        self.east = None
+        self.west = None
         self.x = x
         self.y = y
     def __repr__(self):
-        if self.e_to is not None:
-            return f"({self.x}, {self.y}) -> ({self.e_to.x}, {self.e_to.y})"
+        if self.east is not None:
+            return f"({self.x}, {self.y}) -> ({self.east.x}, {self.east.y})"
         return f"({self.x}, {self.y})"
     def connect_rooms(self, connecting_room, direction):
         '''
@@ -27,13 +27,13 @@ class Room:
         '''
         reverse_dirs = {"n": "s", "s": "n", "e": "w", "w": "e"}
         reverse_dir = reverse_dirs[direction]
-        setattr(self, f"{direction}_to", connecting_room)
-        setattr(connecting_room, f"{reverse_dir}_to", self)
+        setattr(self, str(direction), connecting_room)
+        setattr(connecting_room, str(direction), self)
     def get_room_in_direction(self, direction):
         '''
         Connect two rooms in the given n/s/e/w direction
         '''
-        return getattr(self, f"{direction}_to")
+        return getattr(self, str(direction))
 
 
 class World:
@@ -114,7 +114,7 @@ class World:
             # PRINT NORTH CONNECTION ROW
             str += "#"
             for room in row:
-                if room is not None and room.n_to is not None:
+                if room is not None and room.north is not None:
                     str += "  |  "
                 else:
                     str += "     "
@@ -122,7 +122,7 @@ class World:
             # PRINT ROOM ROW
             str += "#"
             for room in row:
-                if room is not None and room.w_to is not None:
+                if room is not None and room.west is not None:
                     str += "-"
                 else:
                     str += " "
@@ -130,7 +130,7 @@ class World:
                     str += f"{room.id}".zfill(3)
                 else:
                     str += "   "
-                if room is not None and room.e_to is not None:
+                if room is not None and room.east is not None:
                     str += "-"
                 else:
                     str += " "
@@ -138,7 +138,7 @@ class World:
             # PRINT SOUTH CONNECTION ROW
             str += "#"
             for room in row:
-                if room is not None and room.s_to is not None:
+                if room is not None and room.south is not None:
                     str += "  |  "
                 else:
                     str += "     "
