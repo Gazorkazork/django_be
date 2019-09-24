@@ -13,7 +13,7 @@ class Room(models.Model):
     coord_y = models.IntegerField(default=0)
     north = models.IntegerField(default=0)
     south = models.IntegerField(default=0)
-    east = models.IntegerField(default=0)
+    east = models.IntegerField(default=0)asdasd
     west = models.IntegerField(default=0)
     def connectRooms(self, destinationRoom, direction):
         destinationRoomID = destinationRoom.id
@@ -39,6 +39,9 @@ class Room(models.Model):
     def playerUUIDs(self, currentPlayerID):
         return [p.uuid for p in Player.objects.filter(currentRoom=self.id) if p.id != int(currentPlayerID)]
 
+class Planet(models.Model):
+    title = models.CharField(max_length=50, default="DEFAULT TITLE")
+    description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

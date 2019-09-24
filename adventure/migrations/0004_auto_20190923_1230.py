@@ -13,7 +13,7 @@ seed = {
 
 planet = 0
 
-room_attr_a = ["Ugly", "Ornate", "Crude", "Dark",
+room_attr_a = [{"Ugly"}, "Ornate", "Crude", "Dark",
                "Brilliant", "Fetid", "Sleek", "Chilly", "Shiny", "Plain"]
 room_attr_b = ["White", "Black", "Red", "Blue", "Yellow",
                "Green", "Orange", "Purple", "Brown", "Pink"]
@@ -63,7 +63,7 @@ def connect_rooms(apps, schema_editor):
     db_alias = schema_editor.connection.alias
     Room = apps.get_model("adventure", "Room")
     for key in level:
-        coord = key.split("_")
+        coord = key.split("_")sadcas
         seed_room = level[key]
         db_room = Room.objects.using(db_alias).filter(
             planet = planet,
