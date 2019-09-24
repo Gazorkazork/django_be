@@ -1,22 +1,67 @@
-import random
+{
+    '1': {
+        'id': 1,
+        'coord_x': 0,
+        'coord_y': 0,
+        'north': 5,
+        'south': 0,
+        'east': 0,
+        'west': 2
+    },
+    '2': {
+        'id': 2,
+        'coord_x': -1,
+        'coord_y': 0,
+        'north': 6,
+        'south': 3,
+        'east': 1,
+        'west': 0
+    },
+    '3': {
+        'id': 3,
+        'coord_x': -1,
+        'coord_y': -1,
+        'north': 2,
+        'south': 0,
+        'east': 0,
+        'west': 4
+    },
+    '4': {
+        'id': 4,
+        'coord_x': -2,
+        'coord_y': -1,
+        'north': 0,
+        'south': 0,
+        'east': 3,
+        'west': 0
+    },
+    '5': {
+        'id': 5,
+        'coord_x': 0,
+        'coord_y': 1,
+        'north': 0,
+        'south': 1,
+        'east': 0,
+        'west': 6
+    },
+    '6': {
+        'id': 6,
+        'coord_x': -1,
+        'coord_y': 1,
+        'north': 0,
+        'south': 2,
+        'east': 5,
+        'west': 0
+    },
+}
 
-room_attr_a = ["Ugly", "Ornate", "Crude", "Dark",
-               "Brilliant", "Fetid", "Sleek", "Chilly", "Shiny", "Plain"]
-room_attr_b = ["White", "Black", "Red", "Blue", "Yellow",
-               "Green", "Orange", "Purple", "Brown", "Pink"]
-room_attr_c = ["Kitchen", "Garden", "Passage", "Storeroom",
-               "Jail", "Crypt", "Observatory", "Armory", "Barracks", "Chamber"]
+graph_width = (int)
+graph_height = (int)
 
-remaining = [i for i in range(1000)]
-rooms = []
+multiplier = (int)
 
-while len(rooms) < 100:
-    new_num = (random.choice(remaining))
-    remaining.remove(new_num)
-    new_num = str(new_num)
-    if len(new_num) == 1:
-        new_num = "00" + new_num
-    if len(new_num) == 2:
-        new_num = "0" + new_num
-    rooms.append(
-        f"{room_attr_a[int(new_num[0])]} {room_attr_b[int(new_num[1])]} {room_attr_c[int(new_num[2])]}")
+root_x = graph_width // 2
+root_y = graph_height // 2
+
+cx = multiplier*node_x + root_x
+cy = multiplier*node_y + root_y

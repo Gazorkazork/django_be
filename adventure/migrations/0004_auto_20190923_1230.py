@@ -11,7 +11,7 @@ seed = {
     "coord_y": 6, "north": None, "south": None, "east": (3, 6), "west": (1, 6)}, "-6_-2": {"coord_x": -6, "coord_y": -2, "north": None, "south": (-6, -3), "east": None, "west": None}, "6_1": {"coord_x": 6, "coord_y": 1, "north": (6, 2), "south": None, "east": None, "west": None}, "3_6": {"coord_x": 3, "coord_y": 6, "north": None, "south": None, "east": None, "west": (2, 6)}, "-1_-5": {"coord_x": -1, "coord_y": -5, "north": None, "south": None, "east": (0, -5), "west": None}, "-5_-1": {"coord_x": -5, "coord_y": -1, "north": (-5, 0), "south": (-5, -2), "east": (-4, -1), "west": (-6, -1)}, "4_5": {"coord_x": 4, "coord_y": 5, "north": None, "south": None, "east": None, "west": (3, 5)}, "-4_3": {"coord_x": -4, "coord_y": 3, "north": None, "south": None, "east": (-3, 3), "west": (-5, 3)}, "-4_-1": {"coord_x": -4, "coord_y": -1, "north": None, "south": (-4, -2), "east": (-3, -1), "west": (-5, -1)}, "-4_-5": {"coord_x": -4, "coord_y": -5, "north": (-4, -4), "south": None, "east": (-3, -5), "west": None}, "-3_-4": {"coord_x": -3, "coord_y": -4, "north": (-3, -3), "south": (-3, -5), "east": None, "west": None}, "-2_4": {"coord_x": -2, "coord_y": 4, "north": None, "south": (-2, 3), "east": None, "west": None}, "-3_1": {"coord_x": -3, "coord_y": 1, "north": None, "south": None, "east": (-2, 1), "west": None}, "-2_3": {"coord_x": -2, "coord_y": 3, "north": (-2, 4), "south": None, "east": (-1, 3), "west": (-3, 3)}, "-3_-5": {"coord_x": -3, "coord_y": -5, "north": (-3, -4), "south": None, "east": None, "west": (-4, -5)}, "-5_3": {"coord_x": -5, "coord_y": 3, "north": None, "south": None, "east": (-4, 3), "west": None}, "-6_-1": {"coord_x": -6, "coord_y": -1, "north": None, "south": None, "east": (-5, -1), "west": None}, "1_7": {"coord_x": 1, "coord_y": 7, "north": None, "south": (1, 6), "east": None, "west": None}, "-1_5": {"coord_x": -1, "coord_y": 5, "north": None, "south": (-1, 4), "east": None, "west": None}, "-5_0": {"coord_x": -5, "coord_y": 0, "north": None, "south": (-5, -1), "east": None, "west": None}, "-3_5": {"coord_x": -3, "coord_y": 5, "north": None, "south": (-3, 4), "east": None, "west": None}
 }
 
-floor = 0
+planet = 0
 
 room_attr_a = ["Ugly", "Ornate", "Crude", "Dark",
                "Brilliant", "Fetid", "Sleek", "Chilly", "Shiny", "Plain"]
@@ -44,7 +44,7 @@ def make_rooms(apps, schema_editor):
         coord = key.split("_")
         rooms.append(
             Room(
-                floor = floor,
+                planet = planet,
                 coord_x = coord[0],
                 coord_y = coord[1],
                 title = titles.pop()
@@ -66,14 +66,14 @@ def connect_rooms(apps, schema_editor):
         coord = key.split("_")
         seed_room = level[key]
         db_room = Room.objects.using(db_alias).filter(
-            floor = floor,
+            planet = planet,
             coord_x = coord[0],
             coord_y = coord[1]
         )[0]
         for direc in ["north", "south", "east", "west"]:
             if seed_room[direc]:
                 dest = Room.objects.using(db_alias).filter(
-                    floor = floor,
+                    planet = planet,
                     coord_x = seed_room[direc][0],
                     coord_y = seed_room[direc][1]
                 )[0]
@@ -83,10 +83,11 @@ def connect_rooms(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('adventure', '0003_room_floor'),
+        ('adventure', '0003_room_planet'),
     ]
 
     operations = [
         migrations.RunPython(make_rooms, delete_rooms),
         migrations.RunPython(connect_rooms, delete_rooms)
     ]
+

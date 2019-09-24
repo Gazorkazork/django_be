@@ -8,7 +8,7 @@ import uuid
 class Room(models.Model):
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
     description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
-    floor = models.IntegerField(default=0)
+    planet = models.IntegerField(default=0)
     coord_x = models.IntegerField(default=0)
     coord_y = models.IntegerField(default=0)
     north = models.IntegerField(default=0)

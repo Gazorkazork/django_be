@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='room',
-            name='floor',
+            name='planet',
             field=models.IntegerField(default=0),
         ),
     ]

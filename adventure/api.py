@@ -19,8 +19,21 @@ def initialize(request):
     player_id = player.id
     uuid = player.uuid
     room = player.room()
+    planet_rooms = Room.objects.filter(planet=room.planet)
+    planet_map = {
+        "planet": room.planet,
+        "rooms": [{
+            'id': i.id,
+            'x': i.coord_x,
+            'y': i.coord_y,
+            'north': i.north,
+            'south': i.south,
+            'east': i.east,
+            'west': i.west
+        } for i in planet_rooms]
+    }
     players = room.playerNames(player_id)
-    return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players}, safe=True)
+    return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':room.title, 'description':room.description, 'planet_map':planet_map, 'players':players}, safe=True)
 
 
 # @csrf_exempt
