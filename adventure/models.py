@@ -13,7 +13,7 @@ class Room(models.Model):
     coord_y = models.IntegerField(default=0)
     north = models.IntegerField(default=0)
     south = models.IntegerField(default=0)
-    east = models.IntegerField(default=0)asdasd
+    east = models.IntegerField(default=0)
     west = models.IntegerField(default=0)
     def connectRooms(self, destinationRoom, direction):
         destinationRoomID = destinationRoom.id
