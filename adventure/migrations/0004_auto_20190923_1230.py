@@ -15,11 +15,11 @@ planet = 0
 
 room_attr_a = [
     {"name": "Ugly", "desc":"it looks absolutely hideous."},
-    {"name": "Ornate", "desc":"it seems to very intricately built."},
+    {"name": "Ornate", "desc":"it seems to be very intricately built."},
     {"name": "Crude", "desc":"it looks pretty slapdash.  Like it was put together in minutes, poorly."},
     {"name": "Fantastic", "desc":"it is absolutely awe-inspiring."},
     {"name": "Abandoned", "desc":"it looks like no one has been here in quite some time."},
-    {"name": "Decrepit", "desc":"it looks like the whole thing could collapse any minute."},
+    {"name": "Decrepit", "desc":"it looks like the whole thing could collapse at any minute."},
     {"name": "Sleek", "desc":"it seems to be very efficiently built. Functional, yet attractive."},
     {"name": "Chilly", "desc":"it looks like the elements have begun to break through. It is chilly here."},
     {"name": "Shiny", "desc":"there are a great many twinkling objects here."},
@@ -45,10 +45,10 @@ room_attr_b = [
     {"name": "Spacious", "desc": "This room is HUGE!  It echos your steps as you walk.  Yet, "},
     {"name": "Cramped", "desc": "The ceiling is low and you must crawl to move.  Nevertheless, "},
     {"name": "Cavernous", "desc": "You yell, 'ECHOOO!!!' inside to test the acoustics.  Amused, you notice "},
-    {"name": "Miniscule", "desc": "You marvel at how small the room is.  The people who made this must have been a fraction of your height.  You notice "},
+    {"name": "Miniscule", "desc": "You marvel at how small the room is.  The people who made this must have been a fraction of your height.  You notice that "},
     {"name": "Chrome", "desc": "Everything in here appears to be crafted from a dark, mysterious metal. You don't know what the metal is, but you do know "},
     {"name": "Granite", "desc": "You notice that this room has been carved out from a single stone. It has very smooth walls and no corners. You see that "},
-    {"name": "Crystal", "desc": "You stand in awe at the sight of light dancing of the many facets in this area.  You conclude "},
+    {"name": "Crystal", "desc": "You stand in awe at the sight of light dancing of the many facets in this area.  You conclude that "},
 ]
 room_attr_c = [
     {"name": "Corridor", "desc": "You stand in a corridor.  "},
@@ -67,8 +67,8 @@ room_attr_c = [
     {"name": "Kitchen", "desc": "Pots, pans, and utensils scatter the room. You look around the kitchen for something edible.  "},
     {"name": "Temple", "desc": "You see strange idols from what you assume are different religions.  This must be a temple.  "},
     {"name": "Infirmary", "desc": "Surrounded by medical tools, you assure yourself that you're in an infirmary.  "},
-    {"name": "Atrium", "desc": "This room seems to be an entryway of sorts, though to what you couldn't guess."},
-    {"name": "Foyer", "desc": "You stand in... you suppose it looks like a waiting room. Of sorts."},
+    {"name": "Atrium", "desc": "This room seems to be an entryway of sorts, though to what you couldn't guess.  "},
+    {"name": "Foyer", "desc": "You stand in... you suppose it looks like a waiting room. Of sorts.  "},
 ]
 
 total_options = len(room_attr_c) * len(room_attr_b) * len(room_attr_a)
