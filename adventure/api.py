@@ -79,5 +79,9 @@ def say(request):
     # IMPLEMENT
     data = json.loads(request.body)
     player = request.user.player
-    pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {'message': data['message']})
+    room = player.room()
+    players_in_room = room.playerUUIDs(player.uuid)
+    pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {'message': f'You say {data['message']}'})
+    for p_uuid in players_in_room:
+            pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} says {data['message']}.'})
     return JsonResponse({'message':"Totally implemented"}, safe=True)
