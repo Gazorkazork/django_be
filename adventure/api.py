@@ -77,6 +77,7 @@ def move(request):
 @api_view(["POST"])
 def say(request):
     # IMPLEMENT
+    data = json.loads(request.body)
     player = request.user.player
-    pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {'message': request.body['message']})
-    return JsonResponse({'error':"Not yet implemented"}, safe=True, status=500)
+    pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {'message': data['message']})
+    return JsonResponse({'message':"Totally implemented"}, safe=True)
