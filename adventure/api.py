@@ -11,6 +11,7 @@ import json
 # instantiate pusher
 pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
 
+
 @csrf_exempt
 @api_view(["GET"])
 def initialize(request):
@@ -76,12 +77,22 @@ def move(request):
 @csrf_exempt
 @api_view(["POST"])
 def say(request):
-    # IMPLEMENT
     data = json.loads(request.body)
     player = request.user.player
     room = player.room()
     players_in_room = room.playerUUIDs(player.uuid)
-    pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {'message': f'You say {data['message']}'})
+    pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {'message': f'You say "{data["message"]}"'})
     for p_uuid in players_in_room:
-            pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} says {data['message']}.'})
+            pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} says "{data["message"]}".'})
+    return JsonResponse({'message':"Totally implemented"}, safe=True)
+
+
+@csrf_exempt
+@api_view(["POST"])
+def shout(request):
+    data = json.loads(request.body)
+    player = request.user.player
+    room = player.room()
+    players_in_room = room.playerUUIDs(player.uuid)
+    pusher.trigger(f'main-channel', u'broadcast', {'message':f'{player.user.username} (Room: {room.title}) shouts "{data["message"]}".'})
     return JsonResponse({'message':"Totally implemented"}, safe=True)
