@@ -40,8 +40,9 @@ class Migration(migrations.Migration):
             name='RoomItem',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('amount', models.IntegerField(default=1)),
                 ('last_taken', models.DateTimeField(default=None)),
-                ('respawn', models.DurationField()),
+                ('respawn', models.DurationField(default=None)),
                 ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='adventure.Item')),
                 ('room', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='adventure.Room')),
             ],
