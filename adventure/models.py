@@ -8,10 +8,8 @@ import uuid
 
 class Room(models.Model):
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
-    description = models.CharField(
-        max_length=500, default="DEFAULT DESCRIPTION"
-    )
-    floor = models.IntegerField(default=0)
+    description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
+    planet = models.IntegerField(default=0)
     coord_x = models.IntegerField(default=0)
     coord_y = models.IntegerField(default=0)
     north = models.IntegerField(default=0)
@@ -68,6 +66,9 @@ class Room(models.Model):
             })
         return output
 
+class Planet(models.Model):
+    title = models.CharField(max_length=50, default="DEFAULT TITLE")
+    description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

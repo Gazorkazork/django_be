@@ -331,11 +331,11 @@ def printout(layout, n):
         print(line2)
 
 level = populate_level(
-    rooms=100,
-    connections=113,
-    empty_pct=15,
+    rooms=10,
+    connections=11,
+    empty_pct=10,
     empty_var=5,
-    spread=6
+    spread=2
 ) 
 
 print(convert_to_seed(level))
