@@ -65,6 +65,8 @@ def move(request):
         players = nextRoom.playerNames(player_id)
         currentPlayerUUIDs = room.playerUUIDs(player_id)
         nextPlayerUUIDs = nextRoom.playerUUIDs(player_id)
+        pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
+                           'message': f'You walk {dirs[direction]}.'})
         for p_uuid in currentPlayerUUIDs:
             pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {
                            'message': f'{player.user.username} has walked {dirs[direction]}.'})
@@ -74,6 +76,8 @@ def move(request):
         return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': nextRoom.description, 'players': players, 'error_msg': ""}, safe=True)
     else:
         players = room.playerNames(player_id)
+        pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
+                           'message': 'You cannot go that way.'})
         return JsonResponse({'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
 
 
