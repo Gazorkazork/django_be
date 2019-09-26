@@ -146,7 +146,7 @@ class RoomItem(models.Model):
     )
     amount = models.IntegerField(default=1)
     last_taken = models.DateTimeField(default=None)
-    respawn = models.DurationField()
+    respawn = models.DurationField(default=None)
 
 
 @receiver(post_save, sender=User)
