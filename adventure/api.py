@@ -118,7 +118,7 @@ def whisper(request):
     target_uuid = target.player.uuid
     room = player.room()
     pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
-                   'message':f'You whisper to {data[target]} "{data["message"]}".'})
+                   'message':f'You whisper to {data["target"]} "{data["message"]}".'})
     pusher.trigger(f'p-channel-{target_uuid}', u'broadcast', {
                    'message': f'{player.user.username} (Room: {room.title}) whispers "{data["message"]}".'})
     return JsonResponse({'message': "Totally implemented"}, safe=True)
