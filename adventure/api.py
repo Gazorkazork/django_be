@@ -92,19 +92,24 @@ def get_item(request):
         ri = RoomItem.objects.get(room=room.id, item=item_id)
     except:
         return JsonResponse({'error_msg': "No such item in this room."})
-    if ri.amount > 0:
+    if ri.amount == 1 and not ri.respawn:
+        ri.delete()
+    elif ri.amount > 0:
         ri.amount -= 1
+        ri.last_taken = datetime.datetime.now()
+        ri.save()
     else:
         if ri.last_taken + datetime.timedelta(seconds=ri.respawn) < datetime.datetime.now():
             return JsonResponse({'error_msg': "None left. Wait for respawn."})
+        else:
+            ri.last_taken = datetime.datetime.now()
+            ri.save()
     try:
         pi = PlayerItem.objects.get(player=player_id, item=item_id)
         pi.amount += 1
     except PlayerItem.DoesNotExist:
         pi = PlayerItem(player=player_id, item=item_id)
-    ri.last_taken = datetime.datetime.now()
     pi.save()
-    ri.save()
     currentPlayerUUIDs = room.playerUUIDs(player_id)
     for p_uuid in currentPlayerUUIDs:
         pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} picked up {item.name}.'})
