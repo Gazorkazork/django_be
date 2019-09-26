@@ -93,6 +93,17 @@ def shout(request):
     data = json.loads(request.body)
     player = request.user.player
     room = player.room()
-    players_in_room = room.playerUUIDs(player.uuid)
     pusher.trigger(f'main-channel', u'broadcast', {'message':f'{player.user.username} (Room: {room.title}) shouts "{data["message"]}".'})
+    return JsonResponse({'message':"Totally implemented"}, safe=True)
+
+
+@csrf_exempt
+@api_view(["POST"])
+def whisper(request):
+    data = json.loads(request.body)
+    player = request.user.player
+    target = User.objects.get(username = data.target)
+    target_uuid = target.player.uuid
+    room = player.room()
+    pusher.trigger(f'p-channel-{target_uuid}', u'broadcast', {'message':f'{player.user.username} (Room: {room.title}) whispers "{data["message"]}".'})
     return JsonResponse({'message':"Totally implemented"}, safe=True)
