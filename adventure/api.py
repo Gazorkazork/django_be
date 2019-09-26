@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import *
 from rest_framework.decorators import api_view
 import json
+import datetime
 
 # instantiate pusher
 pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config(
@@ -49,6 +50,7 @@ def move(request):
     data = json.loads(request.body)
     direction = data['direction']
     room = player.room()
+    items = room.items()
     nextRoomID = None
     if direction == "n":
         nextRoomID = room.north
@@ -63,6 +65,7 @@ def move(request):
         player.currentRoom = nextRoomID
         player.save()
         players = nextRoom.playerNames(player_id)
+        nextItems = nextRoom.items()
         currentPlayerUUIDs = room.playerUUIDs(player_id)
         nextPlayerUUIDs = nextRoom.playerUUIDs(player_id)
         for p_uuid in currentPlayerUUIDs:
@@ -71,10 +74,86 @@ def move(request):
         for p_uuid in nextPlayerUUIDs:
             pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {
                            'message': f'{player.user.username} has entered from the {reverse_dirs[direction]}.'})
-        return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': nextRoom.description, 'players': players, 'error_msg': ""}, safe=True)
+        return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': nextRoom.description, 'items': nextRoom.items(), 'players': players, 'error_msg': ""}, safe=True)
     else:
         players = room.playerNames(player_id)
-        return JsonResponse({'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
+        return JsonResponse({'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'items': room.items(), 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
+
+# @csrf_exempt
+@api_view(["POST"])
+def get_item(request):
+    player = request.user.player
+    player_id = player.id
+    data = json.loads(request.body)
+    item_id = data['item']
+    try:
+        item = Item.objects.get(id=item_id)
+    except:
+        return JsonResponse({'error_msg': "No such item."})
+    room = player.room()
+    try:
+        ri = RoomItem.objects.get(room=room, item=item)
+    except:
+        return JsonResponse({'error_msg': "No such item in this room."})
+    if ri.amount == 1 and not ri.respawn:
+        ri.delete()
+    elif ri.amount > 0:
+        ri.amount -= 1
+        ri.last_taken = datetime.datetime.now()
+        ri.save()
+    else:
+        if ri.last_taken + datetime.timedelta(seconds=ri.respawn) < datetime.datetime.now():
+            return JsonResponse({'error_msg': "None left. Wait for respawn."})
+        else:
+            ri.last_taken = datetime.datetime.now()
+            ri.save()
+    try:
+        pi = PlayerItem.objects.get(player=player, item=item)
+        pi.amount += 1
+    except PlayerItem.DoesNotExist:
+        pi = PlayerItem(player=player, item=item)
+    pi.save()
+    currentPlayerUUIDs = room.playerUUIDs(player_id)
+    for p_uuid in currentPlayerUUIDs:
+        pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
+                       {'message': f'{player.user.username} picked up {item.name}.'})
+    return JsonResponse({'name': item.name, 'description': item.description, 'item_type': item.item_type, 'amount': pi.amount})
+
+
+# @csrf_exempt
+@api_view(["POST"])
+def drop_item(request):
+    player = request.user.player
+    player_id = player.id
+    data = json.loads(request.body)
+    item_id = data['item']
+    try:
+        item = Item.objects.get(id=item_id)
+    except:
+        return JsonResponse({'error_msg': "No such item."})
+    room = player.room()
+    try:
+        pi = PlayerItem.objects.get(player=player, item=item)
+    except:
+        return JsonResponse({'error_msg': "No such item in inventory."})
+    if pi.amount > 1:
+        pi.amount -= 1
+        remaining = pi.amount
+        pi.save()
+    else:
+        pi.delete()
+        remaining = 0
+    try:
+        ri = RoomItem.objects.get(room=room, item=item)
+        ri.amount += 1
+    except RoomItem.DoesNotExist:
+        ri = RoomItem(room=room, item=item)
+    ri.save()
+    currentPlayerUUIDs = room.playerUUIDs(player_id)
+    for p_uuid in currentPlayerUUIDs:
+        pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
+                       {'message': f'{player.user.username} picked up {item.name}.'})
+    return JsonResponse({'name': item.name, 'description': item.description, 'item_type': item.item_type, 'amount': remaining})
 
 
 @csrf_exempt
@@ -99,7 +178,7 @@ def shout(request):
     player = request.user.player
     room = player.room()
     pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
-                   'message':f'You shout "{data["message"]}".'})
+                   'message': f'You shout "{data["message"]}".'})
     pusher.trigger(f'main-channel', u'broadcast',
                    {'message': f'{player.user.username} (Room: {room.title}) shouts "{data["message"]}".'})
     return JsonResponse({'message': "Totally implemented"}, safe=True)
@@ -114,7 +193,7 @@ def whisper(request):
     target_uuid = target.player.uuid
     room = player.room()
     pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
-                   'message':f'You whisper to {data[target]} "{data["message"]}".'})
+                   'message': f'You whisper to {data[target]} "{data["message"]}".'})
     pusher.trigger(f'p-channel-{target_uuid}', u'broadcast', {
                    'message': f'{player.user.username} (Room: {room.title}) whispers "{data["message"]}".'})
     return JsonResponse({'message': "Totally implemented"}, safe=True)
