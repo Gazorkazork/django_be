@@ -18,8 +18,9 @@ item_seed = [
     {
         "name": "OLA Free Trial CD",
         "desc": "It's been a while since you've seen one of these! A genuine OAL free trial compact disk. You remember an urban legend that some of these were blasted into space to cut down the clutter on Earth. It looks like it wasn't just a myth! You wonder if you could still get 30 minutes of internet out of it..."
-    },  
+    },
 ]
+
 
 def make_items(apps, schema_editor):
     Item = apps.get_model("adventure", "Item")
@@ -28,17 +29,19 @@ def make_items(apps, schema_editor):
     for key in item_seed:
         item_group.append(
             Item(
-                title = key["name"],
-                description = key["desc"]
+                name=key["name"],
+                description=key["desc"]
             ),
         )
 
     Item.objects.using(db_alias).bulk_create(item_group)
 
+
 def delete_items(apps, schema_editor):
     db_alias = schema_editor.connection.alias
     Item = apps.get_model("adventure", "Item")
     Item.objects.using(db_alias).delete()
+
 
 def place_items(apps, schema_editor):
     db_alias = schema_editor.connection.alias
@@ -50,20 +53,21 @@ def place_items(apps, schema_editor):
 
     rooms = Room.objects.all()
     items = Item.objects.all()
-    
+
     for r in rooms:
         for i in items:
             if random.random() < .2:
-                ri = RoomItem(room=r.id, item=i.id, respawn=30)
+                ri = RoomItem(room=r, item=i, respawn=30)
                 room_items.append(ri)
 
-
     RoomItem.objects.using(db_alias).bulk_create(room_items)
+
 
 def unplace_items(apps, schema_editor):
     db_alias = schema_editor.connection.alias
     Item = apps.get_model("adventure", "Item")
     Item.objects.using(db_alias).delete()
+
 
 class Migration(migrations.Migration):
 

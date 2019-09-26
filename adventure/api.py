@@ -10,7 +10,8 @@ import json
 import datetime
 
 # instantiate pusher
-pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
+pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config(
+    'PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
 
 
 @csrf_exempt
@@ -35,7 +36,7 @@ def initialize(request):
         } for i in planet_rooms]
     }
     players = room.playerNames(player_id)
-    return JsonResponse({'uuid': uuid, 'name':player.user.username, 'room_id': room.id, 'title':room.title, 'description':room.description, 'planet_map':planet_map, 'players':players}, safe=True)
+    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'planet_map': planet_map, 'players': players}, safe=True)
 
 
 @csrf_exempt
@@ -68,13 +69,15 @@ def move(request):
         currentPlayerUUIDs = room.playerUUIDs(player_id)
         nextPlayerUUIDs = nextRoom.playerUUIDs(player_id)
         for p_uuid in currentPlayerUUIDs:
-            pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} has walked {dirs[direction]}.'})
+            pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {
+                           'message': f'{player.user.username} has walked {dirs[direction]}.'})
         for p_uuid in nextPlayerUUIDs:
-            pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} has entered from the {reverse_dirs[direction]}.'})
-        return JsonResponse({'name':player.user.username, 'room_id': nextRoom.id, 'title':nextRoom.title, 'description':nextRoom.description, 'items': nextRoom.items(), 'players':players, 'error_msg':""}, safe=True)
+            pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {
+                           'message': f'{player.user.username} has entered from the {reverse_dirs[direction]}.'})
+        return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': nextRoom.description, 'items': nextRoom.items(), 'players': players, 'error_msg': ""}, safe=True)
     else:
         players = room.playerNames(player_id)
-        return JsonResponse({'name':player.user.username, 'room_id': room.id, 'title':room.title, 'description':room.description, 'items': room.items(), 'players':players, 'error_msg':"You cannot move that way."}, safe=True)
+        return JsonResponse({'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'items': room.items(), 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
 
 # @csrf_exempt
 @api_view(["POST"])
@@ -89,7 +92,7 @@ def get_item(request):
         return JsonResponse({'error_msg': "No such item."})
     room = player.room()
     try:
-        ri = RoomItem.objects.get(room=room.id, item=item_id)
+        ri = RoomItem.objects.get(room=room, item=item)
     except:
         return JsonResponse({'error_msg': "No such item in this room."})
     if ri.amount == 1 and not ri.respawn:
@@ -105,14 +108,15 @@ def get_item(request):
             ri.last_taken = datetime.datetime.now()
             ri.save()
     try:
-        pi = PlayerItem.objects.get(player=player_id, item=item_id)
+        pi = PlayerItem.objects.get(player=player, item=item)
         pi.amount += 1
     except PlayerItem.DoesNotExist:
-        pi = PlayerItem(player=player_id, item=item_id)
+        pi = PlayerItem(player=player, item=item)
     pi.save()
     currentPlayerUUIDs = room.playerUUIDs(player_id)
     for p_uuid in currentPlayerUUIDs:
-        pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} picked up {item.name}.'})
+        pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
+                       {'message': f'{player.user.username} picked up {item.name}.'})
     return JsonResponse({'name': item.name, 'description': item.description, 'item_type': item.item_type, 'amount': pi.amount})
 
 
@@ -129,7 +133,7 @@ def drop_item(request):
         return JsonResponse({'error_msg': "No such item."})
     room = player.room()
     try:
-        pi = PlayerItem.objects.get(player=player_id, item=item_id)
+        pi = PlayerItem.objects.get(player=player, item=item)
     except:
         return JsonResponse({'error_msg': "No such item in inventory."})
     if pi.amount > 1:
@@ -140,14 +144,15 @@ def drop_item(request):
         pi.delete()
         remaining = 0
     try:
-        ri = RoomItem.objects.get(room=room.id, item=item_id)
+        ri = RoomItem.objects.get(room=room, item=item)
         ri.amount += 1
     except RoomItem.DoesNotExist:
-        ri = RoomItem(room=room.id, item=item_id)
+        ri = RoomItem(room=room, item=item)
     ri.save()
     currentPlayerUUIDs = room.playerUUIDs(player_id)
     for p_uuid in currentPlayerUUIDs:
-        pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} picked up {item.name}.'})
+        pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
+                       {'message': f'{player.user.username} picked up {item.name}.'})
     return JsonResponse({'name': item.name, 'description': item.description, 'item_type': item.item_type, 'amount': remaining})
 
 
@@ -160,8 +165,9 @@ def say(request):
     players_in_room = room.playerUUIDs(player.uuid)
     # pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {'message': f'You say "{data["message"]}"'})
     for p_uuid in players_in_room:
-            pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} says "{data["message"]}".'})
-    return JsonResponse({'message':"Totally implemented"}, safe=True)
+        pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
+                       {'message': f'{player.user.username} says "{data["message"]}".'})
+    return JsonResponse({'message': "Totally implemented"}, safe=True)
 
 
 @csrf_exempt
@@ -170,8 +176,9 @@ def shout(request):
     data = json.loads(request.body)
     player = request.user.player
     room = player.room()
-    pusher.trigger(f'main-channel', u'broadcast', {'message':f'{player.user.username} (Room: {room.title}) shouts "{data["message"]}".'})
-    return JsonResponse({'message':"Totally implemented"}, safe=True)
+    pusher.trigger(f'main-channel', u'broadcast',
+                   {'message': f'{player.user.username} (Room: {room.title}) shouts "{data["message"]}".'})
+    return JsonResponse({'message': "Totally implemented"}, safe=True)
 
 
 @csrf_exempt
@@ -179,8 +186,9 @@ def shout(request):
 def whisper(request):
     data = json.loads(request.body)
     player = request.user.player
-    target = User.objects.get(username = data.target)
+    target = User.objects.get(username=data.target)
     target_uuid = target.player.uuid
     room = player.room()
-    pusher.trigger(f'p-channel-{target_uuid}', u'broadcast', {'message':f'{player.user.username} (Room: {room.title}) whispers "{data["message"]}".'})
-    return JsonResponse({'message':"Totally implemented"}, safe=True)
+    pusher.trigger(f'p-channel-{target_uuid}', u'broadcast', {
+                   'message': f'{player.user.username} (Room: {room.title}) whispers "{data["message"]}".'})
+    return JsonResponse({'message': "Totally implemented"}, safe=True)

@@ -8,7 +8,8 @@ import uuid
 
 class Room(models.Model):
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
-    description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
+    description = models.CharField(
+        max_length=500, default="DEFAULT DESCRIPTION")
     planet = models.IntegerField(default=0)
     coord_x = models.IntegerField(default=0)
     coord_y = models.IntegerField(default=0)
@@ -45,7 +46,7 @@ class Room(models.Model):
 
     def items(self):
         output = []
-        room_items = [ri for ri in RoomItem.objects.filter(room=self.id)]
+        room_items = [ri for ri in RoomItem.objects.filter(room=self)]
         for room_item in room_items:
             output.append({
                 "item": Item.objects.get(id=room_item.item),
@@ -66,9 +67,12 @@ class Room(models.Model):
             })
         return output
 
+
 class Planet(models.Model):
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
-    description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
+    description = models.CharField(
+        max_length=500, default="DEFAULT DESCRIPTION")
+
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -89,7 +93,7 @@ class Player(models.Model):
 
     def items(self):
         output = []
-        player_items = [pi for pi in PlayerItem.objects.filter(player=self.id)]
+        player_items = [pi for pi in PlayerItem.objects.filter(player=self)]
         for player_item in player_items:
             output.append({
                 "item": Item.objects.get(id=player_item.item),
