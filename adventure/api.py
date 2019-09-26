@@ -98,6 +98,8 @@ def shout(request):
     data = json.loads(request.body)
     player = request.user.player
     room = player.room()
+    pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
+                   'message':f'You shout "{data["message"]}".'})
     pusher.trigger(f'main-channel', u'broadcast',
                    {'message': f'{player.user.username} (Room: {room.title}) shouts "{data["message"]}".'})
     return JsonResponse({'message': "Totally implemented"}, safe=True)
