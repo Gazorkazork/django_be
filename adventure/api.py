@@ -32,11 +32,12 @@ def initialize(request):
             'south': i.south,
             'east': i.east,
             'west': i.west,
-            'visited': True if player.hasVisited(i) else False
         } for i in planet_rooms]
     }
+    rooms_visited = PlayerVisited.objects.filter(player = player)
+    visited_list = [i.room.id for i in rooms_visited]
     players = room.playerNames(player_id)
-    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'planet_map': planet_map, 'players': players}, safe=True)
+    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'planet_map': planet_map, 'visited': visited_list, 'players': players}, safe=True)
 
 
 @csrf_exempt
@@ -71,6 +72,8 @@ def move(request):
         players = nextRoom.playerNames(player_id)
         currentPlayerUUIDs = room.playerUUIDs(player_id)
         nextPlayerUUIDs = nextRoom.playerUUIDs(player_id)
+        rooms_visited = PlayerVisited.objects.filter(player = player)
+        visited_list = [i.room.id for i in rooms_visited]
         pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
                            'message': f'You walk {dirs[direction]}.'})
         for p_uuid in currentPlayerUUIDs:
@@ -79,7 +82,7 @@ def move(request):
         for p_uuid in nextPlayerUUIDs:
             pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {
                            'message': f'{player.user.username} has entered from the {reverse_dirs[direction]}.'})
-        return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': description, 'players': players, 'error_msg': ""}, safe=True)
+        return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': description, 'players': players, 'visited': visited_list, 'error_msg': ""}, safe=True)
     else:
         players = room.playerNames(player_id)
         description = room.description
