@@ -58,6 +58,11 @@ class Player(models.Model):
         except Room.DoesNotExist:
             self.initialize()
             return self.room()
+    def hasVisited(self, room):
+        try:
+            return PlayerVisited.objects.get(player=self, room=room)
+        except PlayerVisited.DoesNotExist:
+            return False
 
 class PlayerVisited(models.Model):
     player = models.ForeignKey(

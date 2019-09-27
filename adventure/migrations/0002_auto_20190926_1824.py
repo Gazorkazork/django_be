@@ -13,6 +13,10 @@ seed = {
 
 planet = 0
 
+root_name = "Landing Site"
+root_description = "After a long journey through space, you finally arrive at the planet Gazorkazork.  You land your ship in the middle of what appears to be an abandoned city.   Your sensors show that it's safe to walk around without extra life support.  Adventure awaits!"
+root_description_b = "You feel as though you've been here before.  It's a strange new planet light years from home though so that's impossible.  And yet...  Wait.  No.  There's your ship.  You have been here before.  It seems you've doubled back on your path."
+
 room_attr_a = [
     {"name": "Ugly", "desc":"it looks absolutely hideous."},
     {"name": "Ornate", "desc":"it seems to be very intricately built."},
@@ -104,15 +108,27 @@ def make_rooms(apps, schema_editor):
     for key in level:
         coord = key.split("_")
         current_info = room_info.pop()
-        rooms.append(
-            Room(
-                planet = planet,
-                coord_x = coord[0],
-                coord_y = coord[1],
-                title = current_info["name"],
-                description = current_info["description"]
-            ),
-        )
+        if key is not "0_0":
+            rooms.append(
+                Room(
+                    planet = planet,
+                    coord_x = coord[0],
+                    coord_y = coord[1],
+                    title = current_info["name"],
+                    description = current_info["description"]
+                ),
+            )
+        else:
+            rooms.append(
+                Room(
+                    planet = planet,
+                    coord_x = coord[0],
+                    coord_y = coord[1],
+                    title = root_name,
+                    description = root_description,
+                    description_b = root_description_b
+                ),
+            )
 
     Room.objects.using(db_alias).bulk_create(rooms)
 
