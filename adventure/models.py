@@ -60,7 +60,14 @@ class Player(models.Model):
             return self.room()
 
 class PlayerVisited(models.Model):
-    player = models.
+    player = models.ForeignKey(
+        'Player',
+        on_delete=models.CASCADE
+    )
+    room = models.ForeignKey(
+        'Room',
+        on_delete=models.CASCADE
+    )
 
 @receiver(post_save, sender=User)
 def create_user_player(sender, instance, created, **kwargs):
