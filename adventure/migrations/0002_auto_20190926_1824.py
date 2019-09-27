@@ -146,8 +146,9 @@ def connect_rooms(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('adventure', '0003_room_planet'),
+        ('adventure', '0001_initial'),
     ]
+
 
     operations = [
         migrations.RunPython(make_rooms, delete_rooms),
