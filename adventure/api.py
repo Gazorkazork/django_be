@@ -31,11 +31,13 @@ def initialize(request):
             'north': i.north,
             'south': i.south,
             'east': i.east,
-            'west': i.west
+            'west': i.west,
         } for i in planet_rooms]
     }
+    rooms_visited = PlayerVisited.objects.filter(player = player)
+    visited_list = [i.room.id for i in rooms_visited]
     players = room.playerNames(player_id)
-    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'planet_map': planet_map, 'players': players}, safe=True)
+    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'planet_map': planet_map, 'visited': visited_list, 'players': players}, safe=True)
 
 
 @csrf_exempt
@@ -62,9 +64,16 @@ def move(request):
         nextRoom = Room.objects.get(id=nextRoomID)
         player.currentRoom = nextRoomID
         player.save()
+        description = nextRoom.description
+        if player.hasVisited(nextRoom) and nextRoom.description_b:
+            description = nextRoom.description_b
+        if not player.hasVisited(room):
+            PlayerVisited.objects.create(player=player, room=room)
         players = nextRoom.playerNames(player_id)
         currentPlayerUUIDs = room.playerUUIDs(player_id)
         nextPlayerUUIDs = nextRoom.playerUUIDs(player_id)
+        rooms_visited = PlayerVisited.objects.filter(player = player)
+        visited_list = [i.room.id for i in rooms_visited]
         pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
                            'message': f'You walk {dirs[direction]}.'})
         for p_uuid in currentPlayerUUIDs:
@@ -73,12 +82,15 @@ def move(request):
         for p_uuid in nextPlayerUUIDs:
             pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {
                            'message': f'{player.user.username} has entered from the {reverse_dirs[direction]}.'})
-        return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': nextRoom.description, 'players': players, 'error_msg': ""}, safe=True)
+        return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': description, 'players': players, 'visited': visited_list, 'error_msg': ""}, safe=True)
     else:
         players = room.playerNames(player_id)
+        description = room.description
+        if player.hasVisited(room) and room.description_b:
+            description = nextRoom.description_b
         pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
                            'message': 'You cannot go that way.'})
-        return JsonResponse({'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
+        return JsonResponse({'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': description, 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
 
 
 @csrf_exempt

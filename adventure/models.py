@@ -8,6 +8,7 @@ import uuid
 class Room(models.Model):
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
     description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
+    description_b = models.CharField(max_length=500, default="")
     planet = models.IntegerField(default=0)
     coord_x = models.IntegerField(default=0)
     coord_y = models.IntegerField(default=0)
@@ -57,6 +58,21 @@ class Player(models.Model):
         except Room.DoesNotExist:
             self.initialize()
             return self.room()
+    def hasVisited(self, room):
+        try:
+            return PlayerVisited.objects.get(player=self, room=room)
+        except PlayerVisited.DoesNotExist:
+            return False
+
+class PlayerVisited(models.Model):
+    player = models.ForeignKey(
+        'Player',
+        on_delete=models.CASCADE
+    )
+    room = models.ForeignKey(
+        'Room',
+        on_delete=models.CASCADE
+    )
 
 @receiver(post_save, sender=User)
 def create_user_player(sender, instance, created, **kwargs):
