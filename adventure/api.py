@@ -92,7 +92,7 @@ def move(request):
             description = nextRoom.description_b
         pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
             'message': 'You cannot go that way.'})
-        return JsonResponse({'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': description, 'room_items': room.items(), 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
+        return JsonResponse({'name': player.user.username, 'inventory': player.items(), 'room_id': room.id, 'title': room.title, 'description': description, 'room_items': room.items(), 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
 
 
 @csrf_exempt
@@ -130,6 +130,8 @@ def get_item(request):
         pi = PlayerItem(player=player, item=item)
     pi.save()
     currentPlayerUUIDs = room.playerUUIDs(player_id)
+    pusher.trigger(f'p-channel-{player.uuid}', u'broadcast',
+                   {'message': f'You picked up {item.name}.'})
     for p_uuid in currentPlayerUUIDs:
         pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
                        {'message': f'{player.user.username} picked up {item.name}.'})
@@ -164,6 +166,8 @@ def drop_item(request):
         ri = RoomItem(room=room, item=item)
     ri.save()
     currentPlayerUUIDs = room.playerUUIDs(player_id)
+    pusher.trigger(f'p-channel-{player.uuid}', u'broadcast',
+                   {'message': f'You dropped {item.name}.'})
     for p_uuid in currentPlayerUUIDs:
         pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
                        {'message': f'{player.user.username} picked up {item.name}.'})
