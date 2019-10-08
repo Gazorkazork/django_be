@@ -50,9 +50,10 @@ class Room(models.Model):
         room_items = [ri for ri in RoomItem.objects.filter(room=self)]
         for room_item in room_items:
             output.append({
-                "item_id": room_item.id,
-                "item_name": room_item.item.name,
+                "id": room_item.item.id,
+                "name": room_item.item.name,
                 "description": room_item.item.description,
+                "type": room_item.item.item_type,
                 "amount": room_item.amount
             })
         return output
@@ -97,6 +98,19 @@ class Player(models.Model):
             return PlayerVisited.objects.get(player=self, room=room)
         except PlayerVisited.DoesNotExist:
             return False
+    
+    def items(self):
+        output = []
+        player_items = [pi for pi in PlayerItem.objects.filter(player=self)]
+        for player_item in player_items:
+            output.append({
+                "id": player_item.item.id,
+                "name": player_item.item.name,
+                "description": player_item.item.description,
+                "type": player_item.item.item_type,
+                "amount": player_item.amount
+            })
+        return output
 
 
 class PlayerVisited(models.Model):
@@ -108,16 +122,6 @@ class PlayerVisited(models.Model):
         'Room',
         on_delete=models.CASCADE
     )
-
-    def items(self):
-        output = []
-        player_items = [pi for pi in PlayerItem.objects.filter(player=self)]
-        for player_item in player_items:
-            output.append({
-                "item": Item.objects.get(id=player_item.item),
-                "amount": player_item.amount
-            })
-        return output
 
 
 class Interactable(models.Model):

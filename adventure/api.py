@@ -38,7 +38,7 @@ def initialize(request):
     rooms_visited = PlayerVisited.objects.filter(player=player)
     visited_list = [i.room.id for i in rooms_visited]
     players = room.playerNames(player_id)
-    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'items': room.items(), 'planet_map': planet_map, 'visited': visited_list, 'players': players}, safe=True)
+    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'inventory': player.items(), 'room_id': room.id, 'title': room.title, 'description': room.description, 'room_items': room.items(), 'planet_map': planet_map, 'visited': visited_list, 'players': players}, safe=True)
 
 
 @csrf_exempt
@@ -72,7 +72,6 @@ def move(request):
         if not player.hasVisited(room):
             PlayerVisited.objects.create(player=player, room=room)
         players = nextRoom.playerNames(player_id)
-        nextItems = nextRoom.items()
         currentPlayerUUIDs = room.playerUUIDs(player_id)
         nextPlayerUUIDs = nextRoom.playerUUIDs(player_id)
         rooms_visited = PlayerVisited.objects.filter(player=player)
@@ -85,7 +84,7 @@ def move(request):
         for p_uuid in nextPlayerUUIDs:
             pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {
                            'message': f'{player.user.username} has entered from the {reverse_dirs[direction]}.'})
-        return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': description, 'items': nextRoom.items(), 'players': players, 'visited': visited_list, 'error_msg': ""}, safe=True)
+        return JsonResponse({'name': player.user.username, 'room_id': nextRoom.id, 'title': nextRoom.title, 'description': description, 'room_items': nextRoom.items(), 'players': players, 'visited': visited_list, 'error_msg': ""}, safe=True)
     else:
         players = room.playerNames(player_id)
         description = room.description
@@ -93,7 +92,7 @@ def move(request):
             description = nextRoom.description_b
         pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
             'message': 'You cannot go that way.'})
-        return JsonResponse({'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': description, 'items': room.items(), 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
+        return JsonResponse({'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': description, 'room_items': room.items(), 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
 
 
 @csrf_exempt
@@ -134,10 +133,10 @@ def get_item(request):
     for p_uuid in currentPlayerUUIDs:
         pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
                        {'message': f'{player.user.username} picked up {item.name}.'})
-    return JsonResponse({'name': item.name, 'description': item.description, 'item_type': item.item_type, 'amount': pi.amount})
+    return JsonResponse({'inventory': player.items(), 'room_items': room.items()})
 
 
-# @csrf_exempt
+@csrf_exempt
 @api_view(["POST"])
 def drop_item(request):
     player = request.user.player
@@ -155,11 +154,9 @@ def drop_item(request):
         return JsonResponse({'error_msg': "No such item in inventory."})
     if pi.amount > 1:
         pi.amount -= 1
-        remaining = pi.amount
         pi.save()
     else:
         pi.delete()
-        remaining = 0
     try:
         ri = RoomItem.objects.get(room=room, item=item)
         ri.amount += 1
@@ -170,7 +167,7 @@ def drop_item(request):
     for p_uuid in currentPlayerUUIDs:
         pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
                        {'message': f'{player.user.username} picked up {item.name}.'})
-    return JsonResponse({'name': item.name, 'description': item.description, 'item_type': item.item_type, 'amount': remaining})
+    return JsonResponse({'inventory': player.items(), 'room_items': room.items()})
 
 
 @csrf_exempt
