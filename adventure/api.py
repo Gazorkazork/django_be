@@ -38,7 +38,7 @@ def initialize(request):
     rooms_visited = PlayerVisited.objects.filter(player=player)
     visited_list = [i.room.id for i in rooms_visited]
     players = room.playerNames(player_id)
-    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'planet_map': planet_map, 'visited': visited_list, 'players': players}, safe=True)
+    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'room_id': room.id, 'title': room.title, 'description': room.description, 'items': room.items(), 'planet_map': planet_map, 'visited': visited_list, 'players': players}, safe=True)
 
 
 @csrf_exempt
