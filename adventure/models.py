@@ -1,4 +1,5 @@
 import uuid
+import random
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -159,6 +160,10 @@ class Mob(models.Model):
         on_delete=models.SET_NULL
     )
     target = models.CharField(max_length=50, null=True)
+
+    def moveRand(self):
+        directions = [i for i in ["north", "south", "east", "west"] if self.location[i]]
+        self.location = location[random.choice(directions)]
 
 
 class Interactable(models.Model):
