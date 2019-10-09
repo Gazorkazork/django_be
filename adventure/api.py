@@ -176,6 +176,27 @@ def drop_item(request):
 
 @csrf_exempt
 @api_view(["POST"])
+def look_item(request):
+    player = request.user.player
+    data = json.loads(request.body)
+    target_id = data['target']
+    try:
+        item = Item.objects.get(id=target_id)
+    except:
+        return JsonResponse({'error_msg': "No such item."})
+
+    if (
+        PlayerItem.objects.filter(player=player, item=item).exists() or 
+        RoomItem.objects.filter(room=player.room(), item=item).exists()
+    ):
+        pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {'message': item.description})
+        return JsonResponse({'status': 200})
+    else:
+        return JsonResponse({'error_msg': "No such item here."})
+
+
+@csrf_exempt
+@api_view(["POST"])
 def say(request):
     data = json.loads(request.body)
     player = request.user.player
