@@ -14,6 +14,16 @@ pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config(
     'PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
 
 
+@api_view(['POST'])
+def pusher_auth(request):
+
+    auth = pusher.authenticate(
+        channel=request.form['presence-main-channel'],
+        socket_id=request.form['socket_id']
+    )
+    return json.dumps(auth)
+
+
 @csrf_exempt
 @api_view(["GET"])
 def initialize(request):
