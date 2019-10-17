@@ -13,9 +13,6 @@ import datetime
 pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config(
     'PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
 
-counter = 0
-other_counter = 0
-
 @csrf_exempt
 @api_view(['POST'])
 def pusher_auth(request):
@@ -23,7 +20,6 @@ def pusher_auth(request):
         channel=request.form['presence-main-channel'],
         socket_id=request.form['socket_id']
     )
-    counter += 1
     return json.dumps(auth)
 
 
@@ -57,7 +53,6 @@ def initialize(request):
 @csrf_exempt
 @api_view(["POST"])
 def move(request):
-    other_counter += 1
     dirs = {"n": "north", "s": "south", "e": "east", "w": "west"}
     reverse_dirs = {"n": "south", "s": "north", "e": "west", "w": "east"}
     player = request.user.player
@@ -217,7 +212,7 @@ def say(request):
     room = player.room()
     players_in_room = room.playerUUIDs(player.id)
     pusher.trigger(f'p-channel-{player.uuid}', u'broadcast',
-                   {'message': f'You say "{data["message"]}. COUNTER: {counter}, OTHER COUNTER: {other_counter}"'})
+                   {'message': f'You say "{data["message"]}"'})
     for p_uuid in players_in_room:
         pusher.trigger(f'p-channel-{p_uuid}', u'broadcast',
                        {'message': f'{player.user.username} says "{data["message"]}".'})
