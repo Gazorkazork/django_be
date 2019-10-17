@@ -20,6 +20,8 @@ def pusher_auth(request):
         channel=request.form['presence-main-channel'],
         socket_id=request.form['socket_id']
     )
+    pusher.trigger(f'presence-main-channel', u'broadcast',
+                   {'message': f'SOMEBODY LOGGED IN'})
     return json.dumps(auth)
 
 
@@ -227,7 +229,7 @@ def shout(request):
     room = player.room()
     pusher.trigger(f'p-channel-{player.uuid}', u'broadcast', {
                    'message': f'You shout "{data["message"]}".'})
-    pusher.trigger(f'main-channel', u'broadcast',
+    pusher.trigger(f'presence-main-channel', u'broadcast',
                    {'message': f'{player.user.username} (Room: {room.title}) shouts "{data["message"]}".'})
     return JsonResponse({'message': "Totally implemented"}, safe=True)
 
